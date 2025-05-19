@@ -2,6 +2,9 @@ import { JSDOM } from 'jsdom';
 
 import { languages, getPathWithLanguage } from './lang.js';
 
+// Necessary delay to respect Crawl-delay specified in escriva.org/robots.txt
+const CRAWL_DELAY_MS = 10_000;
+
 function sleep(delayMs) {
   const start = Date.now();
   while (Date.now() < start + delayMs);
@@ -10,7 +13,7 @@ function sleep(delayMs) {
 async function getHtmlAsText() {
   languages.forEach((lang) => {
     console.log(`Crawling for language ${lang}`);
-    sleep(1_000);
+    sleep(CRAWL_DELAY_MS);
     return await fetch(getPathWithLanguage('pt-br') + '1')
       .then((response) => {
         if (!response.ok) {
