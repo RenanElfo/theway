@@ -1,0 +1,7 @@
+{
+  "main": "crawler.js",
+  "type": "commonjs",
+  "dependencies": {
+    "jsdom": "^26.1.0"
+  }
+}
