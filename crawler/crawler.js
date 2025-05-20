@@ -1,3 +1,5 @@
+import FileSystem from 'fs';
+
 import { JSDOM } from 'jsdom';
 
 import { languages, getPathWithLanguage } from './lang.js';
@@ -16,9 +18,13 @@ function sleep(delayMs) {
 
 async function getHtmlAsText() {
   const languages = LANGUAGES; // comment/uncomment to run this for just pt-br
-  languages.forEach(async (lang) => {
+  const theWay = [];
+
+  let lang;
+  for (let langIndex = 0; langIndex < languages.length; langIndex++) {
+    lang = languages[langIndex];
     console.log(`Crawling for language ${lang}`);
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < NUMBER_OF_POINTS; i++) {
       console.log(`Crawling for point ${i+1}`);
       sleep(CRAWL_DELAY_MS);
       const r = await fetch(getPathWithLanguage(lang) + (i+1).toString())
@@ -48,8 +54,15 @@ async function getHtmlAsText() {
           return { subject, point };
         });
       console.log(r);
+      theWay.push(r);
     }
-  });
+    FileSystem.writeFile(
+      'caminho.json',
+      JSON.stringify(theWay, undefined, 2) + '\n\n',
+      (error) => {
+        if (error) throw error;
+    });
+  }
 }
 
 getHtmlAsText();
