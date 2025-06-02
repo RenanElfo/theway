@@ -2,34 +2,46 @@ use std::fs;
 
 use chrono::{Local, NaiveDate};
 use serde::{Deserialize, Serialize};
-use serde_json::Result;
 
+const LCG_MULTIPLIER: i64 = 445;
+const LCG_INCREMENT: i64 = 713;
 const NUMBER_OF_POINTS: i64 = 999;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize)]
 struct Point {
     subject: String,
     point: String,
 }
 
-fn get_day_since_epoch() -> i64 {
+fn get_point_index() -> i64 {
     let current_date: NaiveDate = Local::now().date_naive();
     let epoch: NaiveDate = NaiveDate::from_ymd_opt(1970, 1, 1).unwrap();
     let day_difference = (current_date - epoch).num_days();
     return day_difference % NUMBER_OF_POINTS;
 }
 
-fn main() -> Result<()> {
-    let day_difference = get_day_since_epoch();
+fn point_from_index(index: i64) -> Result<Point, serde_json::Error> {
+    let mut point_number: i64 = 0;
+    for _ in 0..=index {
+        point_number = (LCG_MULTIPLIER * point_number + LCG_INCREMENT) % NUMBER_OF_POINTS;
+    }
 
     let file_path = std::env::args().nth(1).unwrap();
     let json_content = fs::read_to_string(&file_path)
         .expect("Should have been able to read the file");
 
     let points: Vec<Point> = serde_json::from_str(&json_content)?;
-    let first_point: String = points[day_difference as usize].point.clone();
+    let point: Point = points[point_number as usize].clone();
 
-    println!("{first_point}");
+    return Ok(point);
+}
+
+fn main() -> serde_json::Result<()> {
+    let point_index = get_point_index();
+
+    let point = point_from_index(point_index)?;
+
+    println!("{}", point.point);
 
     Ok(())
 }
