@@ -8,6 +8,8 @@ const NUMBER_OF_POINTS = 999;
 
 // Necessary delay to respect Crawl-delay specified in escriva.org/robots.txt
 const CRAWL_DELAY_MS = 10_000;
+const FAST_CRAWL_DELAY_MS = 333;
+const FASTER_CRAWL_DELAY_MS = 50;
 // Using only pt-br for now.
 const LANGUAGES = ['pt-br']
 
@@ -17,17 +19,19 @@ function sleep(delayMs) {
 }
 
 async function getHtmlAsText() {
-  const languages = LANGUAGES; // comment/uncomment to run this for just pt-br
-  const theWay = [];
+  // const languages = LANGUAGES; // comment/uncomment to run this for just pt-br
 
-  let lang;
+  let theWay;
+  let locale;
   for (let langIndex = 0; langIndex < languages.length; langIndex++) {
-    lang = languages[langIndex];
-    console.log(`Crawling for language ${lang}`);
+    theWay = [];
+    locale = languages[langIndex].locale;
+    console.log(`Crawling for locale ${locale}`);
     for (let i = 0; i < NUMBER_OF_POINTS; i++) {
       console.log(`Crawling for point ${i+1}`);
-      sleep(CRAWL_DELAY_MS);
-      const r = await fetch(getPathWithLanguage(lang) + (i+1).toString())
+      // sleep(CRAWL_DELAY_MS);
+      sleep(FAST_CRAWL_DELAY_MS);
+      const r = await fetch(getPathWithLanguage(locale) + (i+1).toString())
         .then((response) => {
           if (!response.ok) {
             throw new Error(`HTTP error: ${response.status}`);
@@ -57,7 +61,7 @@ async function getHtmlAsText() {
       theWay.push(r);
     }
     FileSystem.writeFile(
-      'caminho.json',
+      locale + '.json', // 'caminho.json',
       JSON.stringify(theWay, undefined, 2) + '\n\n',
       (error) => {
         if (error) throw error;
