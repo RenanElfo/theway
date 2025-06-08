@@ -13,6 +13,23 @@ struct Point {
     point: String,
 }
 
+fn format_text(text: String, width: usize) -> String {
+    let mut out = String::new();
+    let mut char_counter = 0;
+    for word in text.split_whitespace() {
+        if char_counter + word.len() > width {
+            out.push('\n');
+            char_counter = 0;
+        } else {
+            if char_counter != 0 { out.push(' ') }
+        }
+        char_counter += word.len() + 1;
+        out.push_str(word);
+    }
+
+    return out;
+}
+
 fn get_point_index() -> i64 {
     let current_date: NaiveDate = Local::now().date_naive();
     let epoch: NaiveDate = NaiveDate::from_ymd_opt(1970, 1, 1).unwrap();
@@ -23,7 +40,8 @@ fn get_point_index() -> i64 {
 fn point_from_index(index: i64) -> Result<Point, serde_json::Error> {
     let mut point_number: i64 = 0;
     for _ in 0..=index {
-        point_number = (LCG_MULTIPLIER * point_number + LCG_INCREMENT) % NUMBER_OF_POINTS;
+        point_number = (LCG_MULTIPLIER * point_number + LCG_INCREMENT)
+            % NUMBER_OF_POINTS;
     }
 
     let file_path = std::env::args().nth(1).unwrap();
