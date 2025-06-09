@@ -38,20 +38,28 @@ fn get_point_index() -> i64 {
 }
 
 fn point_from_index(index: i64) -> Result<Point, serde_json::Error> {
-    let mut point_number: i64 = 0;
-    for _ in 0..=index {
-        point_number = (LCG_MULTIPLIER * point_number + LCG_INCREMENT)
-            % NUMBER_OF_POINTS;
-    }
+    let point_number = point_number_from_index(index);
 
     let file_path = std::env::args().nth(1).unwrap();
     let json_content = fs::read_to_string(&file_path)
         .expect("Should have been able to read the file");
 
     let points: Vec<Point> = serde_json::from_str(&json_content)?;
-    let point: Point = points[point_number as usize].clone();
+    let zero_indexed_point_number: usize = point_number - 1;
+    let point: Point = points[zero_indexed_point_number].clone();
 
     return Ok(point);
+}
+
+fn point_number_from_index(index: i64) -> usize {
+    let mut zero_indexed_point_number: i64 = 0;
+    for _ in 0..=index {
+        zero_indexed_point_number =
+            (LCG_MULTIPLIER * zero_indexed_point_number + LCG_INCREMENT)
+            % NUMBER_OF_POINTS;
+    }
+
+    return (zero_indexed_point_number + 1) as usize;
 }
 
 fn main() -> serde_json::Result<()> {
@@ -59,7 +67,7 @@ fn main() -> serde_json::Result<()> {
 
     let point = point_from_index(point_index)?;
 
-    println!("{}. {}", point_index + 1, point.subject);
+    println!("{}. {}", point_number_from_index(point_index), point.subject);
     for paragraph in point.paragraphs {
         println!("\n{}", format_text(paragraph.clone(), 50));
     }
