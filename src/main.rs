@@ -10,7 +10,7 @@ const NUMBER_OF_POINTS: i64 = 999;
 #[derive(Clone, Serialize, Deserialize)]
 struct Point {
     subject: String,
-    point: String,
+    paragraphs: Vec<String>,
 }
 
 fn format_text(text: String, width: usize) -> String {
@@ -59,7 +59,10 @@ fn main() -> serde_json::Result<()> {
 
     let point = point_from_index(point_index)?;
 
-    println!("{}", point.point);
+    println!("Ponto: {}", point_index + 1);
+    for paragraph in point.paragraphs {
+        println!("\n{}", format_text(paragraph.clone(), 50));
+    }
 
     Ok(())
 }
