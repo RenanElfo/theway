@@ -59,7 +59,7 @@ fn main() -> serde_json::Result<()> {
 
     let point = point_from_index(point_index)?;
 
-    println!("Ponto: {}", point_index + 1);
+    println!("{}. {}", point_index + 1, point.subject);
     for paragraph in point.paragraphs {
         println!("\n{}", format_text(paragraph.clone(), 50));
     }
