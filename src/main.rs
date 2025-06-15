@@ -3,6 +3,9 @@ use std::fs;
 use chrono::{Local, NaiveDate};
 use serde::{Deserialize, Serialize};
 
+mod format;
+use format::format_text;
+
 const LCG_MULTIPLIER: i64 = 445;
 const LCG_INCREMENT: i64 = 713;
 const NUMBER_OF_POINTS: i64 = 999;
@@ -11,23 +14,6 @@ const NUMBER_OF_POINTS: i64 = 999;
 struct Point {
     subject: String,
     paragraphs: Vec<String>,
-}
-
-fn format_text(text: String, width: usize) -> String {
-    let mut out = String::new();
-    let mut char_counter = 0;
-    for word in text.split_whitespace() {
-        if char_counter + word.len() > width {
-            out.push('\n');
-            char_counter = 0;
-        } else {
-            if char_counter != 0 { out.push(' ') }
-        }
-        char_counter += word.len() + 1;
-        out.push_str(word);
-    }
-
-    return out;
 }
 
 fn get_point_index() -> i64 {
