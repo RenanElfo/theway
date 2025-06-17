@@ -8,24 +8,27 @@ const LCG_INCREMENT: i32 = 713;
 const NUMBER_OF_POINTS: i32 = 999;
 
 #[derive(Clone, Serialize, Deserialize)]
-pub struct PointContent {
-    pub subject: String,
-    pub paragraphs: Vec<String>,
+struct PointContent {
+    subject: String,
+    paragraphs: Vec<String>,
 }
 
 pub struct Point {
     pub number: i32,
-    pub content: PointContent,
+    pub subject: String,
+    pub paragraphs: Vec<String>,
 }
 
 impl Point {
     pub fn new() -> Point {
         let point_index = get_point_index();
         let point_number = point_number_from_index(point_index);
-        let content = content_from_index(point_index);
+        let content = content_from_index(point_index)
+            .expect("Could not create point: no content");
         return Point {
             number: point_number,
-            content: content.expect("Could not create point: no content")
+            subject: content.subject,
+            paragraphs: content.paragraphs,
         };
     }
 }
