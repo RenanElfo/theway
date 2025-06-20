@@ -11,6 +11,8 @@ struct Args {
     locale: String,
     #[arg(short, long, default_value_t = 50)]
     width: usize,
+    #[arg(short, long)]
+    point: Option<i32>,
 }
 
 fn main() {
@@ -20,7 +22,7 @@ fn main() {
         .find(|&element| element.locale == args.locale)
         .unwrap()
         .content;
-    let point = Point::new(book_content);
+    let point = Point::new(book_content, args.point);
 
     println!("{}. {}", point.number, point.subject);
     for paragraph in point.paragraphs {

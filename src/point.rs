@@ -18,9 +18,12 @@ pub struct Point {
 }
 
 impl Point {
-    pub fn new(book_content: &'static str) -> Point {
+    pub fn new(book_content: &'static str, point_number: Option<i32>) -> Point {
         let point_index = get_point_index();
-        let point_number = point_number_from_index(point_index);
+        let point_number = match point_number {
+            Some(value) => value,
+            None => point_number_from_index(point_index),
+        };
         let content = content_from_index(point_index, book_content)
             .expect("Could not create point: no content");
         return Point {
