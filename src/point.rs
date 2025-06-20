@@ -1,5 +1,3 @@
-use std::fs;
-
 use chrono::{Local, NaiveDate};
 use serde::{Deserialize, Serialize};
 
@@ -20,10 +18,10 @@ pub struct Point {
 }
 
 impl Point {
-    pub fn new() -> Point {
+    pub fn new(book_content: &'static str) -> Point {
         let point_index = get_point_index();
         let point_number = point_number_from_index(point_index);
-        let content = content_from_index(point_index)
+        let content = content_from_index(point_index, book_content)
             .expect("Could not create point: no content");
         return Point {
             number: point_number,
@@ -51,16 +49,16 @@ fn point_number_from_index(index: i32) -> i32 {
     return zero_indexed_point_number + 1;
 }
 
-fn content_from_index(index: i32) -> Result<PointContent, serde_json::Error> {
+fn content_from_index(index: i32, book_content: &'static str)
+        -> Result<PointContent, serde_json::Error> {
     let point_number = point_number_from_index(index);
 
-    let file_path = std::env::args().nth(1).unwrap();
-    let json_content = fs::read_to_string(&file_path)
-        .expect("Should have been able to read the file");
-
-    let points: Vec<PointContent> = serde_json::from_str(&json_content)?;
+    let points: Vec<PointContent> = serde_json::from_str(book_content)?;
     let zero_indexed_point_number = (point_number - 1) as usize;
     let point: PointContent = points[zero_indexed_point_number].clone();
 
     return Ok(point);
 }
+
+// fn filepath_from_locale(locale: String) -> String {
+// }

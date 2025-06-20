@@ -1,0 +1,33 @@
+pub struct Book {
+    pub locale: &'static str,
+    pub content: &'static str,
+}
+
+pub const BOOKS: [Book; 26] = [
+	Book { locale: "es", content: include_str!("../book/es.json") },
+	Book { locale: "bg", content: include_str!("../book/bg.json") },
+	Book { locale: "ca", content: include_str!("../book/ca.json") },
+	Book { locale: "cs", content: include_str!("../book/cs.json") },
+	Book { locale: "de", content: include_str!("../book/de.json") },
+	Book { locale: "en", content: include_str!("../book/en.json") },
+	Book { locale: "fi", content: include_str!("../book/fi.json") },
+	Book { locale: "fr", content: include_str!("../book/fr.json") },
+	Book { locale: "hr", content: include_str!("../book/hr.json") },
+	Book { locale: "it", content: include_str!("../book/it.json") },
+	Book { locale: "ja", content: include_str!("../book/ja.json") },
+	Book { locale: "ko", content: include_str!("../book/ko.json") },
+	Book { locale: "lt", content: include_str!("../book/lt.json") },
+	Book { locale: "lv", content: include_str!("../book/lv.json") },
+	Book { locale: "hu", content: include_str!("../book/hu.json") },
+	Book { locale: "nl", content: include_str!("../book/nl.json") },
+	Book { locale: "pl", content: include_str!("../book/pl.json") },
+	Book { locale: "pt-br", content: include_str!("../book/pt-br.json") },
+	Book { locale: "pt-pt", content: include_str!("../book/pt-pt.json") },
+	Book { locale: "ro", content: include_str!("../book/ro.json") },
+	Book { locale: "ru", content: include_str!("../book/ru.json") },
+	Book { locale: "sk", content: include_str!("../book/sk.json") },
+	Book { locale: "sl", content: include_str!("../book/sl.json") },
+	Book { locale: "sv", content: include_str!("../book/sv.json") },
+	Book { locale: "zh-hans", content: include_str!("../book/zh-hans.json") },
+	Book { locale: "zh-hant", content: include_str!("../book/zh-hant.json") },
+];
