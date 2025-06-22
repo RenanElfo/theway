@@ -7,10 +7,15 @@ mod book; use book::BOOKS;
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
 struct Args {
+    /// Language to display the point in. Available locales:
+    ///     es, bg, ca, cs, de, en, fi, fr, hr, it, ja, ko, lt, lv, hu, nl, pl,
+    ///     pt-br, pt-pt, ro, ru, sk, sl, sv, zh-hans, zh-hant
     #[arg(short, long, default_value_t = String::from("en"))]
     locale: String,
+    /// Max width for displaying the point.
     #[arg(short, long, default_value_t = 50)]
     width: usize,
+    /// Display specified point number instead of pseudo-random one.
     #[arg(short, long)]
     point: Option<i32>,
 }

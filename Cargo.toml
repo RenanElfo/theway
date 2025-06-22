@@ -2,6 +2,14 @@
 name = "theway"
 version = "0.1.0"
 edition = "2024"
+authors = ["Renan Elfo <renanmedeirosaguiar@gmail.com>"]
+license = "MIT"
+description = "CLI tool for displaying points from The Way by Saint Josemaría"
+readme = "README.md"
+homepage = "https://github.com/RenanElfo/theway"
+repository = "https://github.com/RenanElfo/theway"
+keywords = ["cli", "theway", "josemaria", "escriva"]
+categories = ["command-line-utilities"]
 
 [dependencies]
 serde = { version = "1.0.219", features = ["derive"] }
