@@ -24,7 +24,7 @@ impl Point {
             Some(value) => value,
             None => point_number_from_index(point_index),
         };
-        let content = content_from_index(point_index, book_content)
+        let content = content_from_index(point_number, book_content)
             .expect("Could not create point: no content");
         return Point {
             number: point_number,
@@ -52,16 +52,11 @@ fn point_number_from_index(index: i32) -> i32 {
     return zero_indexed_point_number + 1;
 }
 
-fn content_from_index(index: i32, book_content: &'static str)
+fn content_from_index(point_number: i32, book_content: &'static str)
         -> Result<PointContent, serde_json::Error> {
-    let point_number = point_number_from_index(index);
-
     let points: Vec<PointContent> = serde_json::from_str(book_content)?;
     let zero_indexed_point_number = (point_number - 1) as usize;
     let point: PointContent = points[zero_indexed_point_number].clone();
 
     return Ok(point);
 }
-
-// fn filepath_from_locale(locale: String) -> String {
-// }
