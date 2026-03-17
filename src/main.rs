@@ -1,8 +1,13 @@
 use clap::Parser;
 
-mod format; use format::format_text;
-mod point; use point::Point;
-mod book; use book::BOOKS;
+mod format;
+use format::format_text;
+mod point;
+use point::Point;
+mod book;
+use book::BOOKS;
+mod typst;
+use typst::to_image;
 
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
@@ -21,6 +26,7 @@ struct Args {
 }
 
 fn main() {
+    to_image();
     let args = Args::parse();
     let book_content = BOOKS
         .iter()
