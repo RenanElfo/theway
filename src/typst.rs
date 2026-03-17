@@ -1,3 +1,4 @@
+use crate::point::Point;
 use chrono::{self, Datelike};
 use typst::diag::{FileError, FileResult};
 use typst::foundations::{Bytes, Datetime};
@@ -71,10 +72,11 @@ impl World for StringWorld {
     }
 }
 
-pub fn to_image() {
-    let typst_code = include_str!("../typst/template.typ");
+pub fn to_image(point: &Point) {
+    let mut typst_code = include_str!("../typst/template.typ").to_owned();
+    typst_code.push_str(&point.subject);
     let font_bytes = std::fs::read("Philosopher-Regular.ttf").unwrap();
-    let world = StringWorld::new(typst_code.to_string(), font_bytes);
+    let world = StringWorld::new(typst_code, font_bytes);
     let document = compile::<PagedDocument>(&world).output.unwrap();
     let pdf_bytes = pdf(&document, &PdfOptions::default()).unwrap();
     std::fs::write("output.pdf", pdf_bytes).unwrap();
