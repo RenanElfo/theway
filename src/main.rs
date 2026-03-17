@@ -26,7 +26,6 @@ struct Args {
 }
 
 fn main() {
-    to_image();
     let args = Args::parse();
     let book_content = BOOKS
         .iter()
@@ -34,6 +33,7 @@ fn main() {
         .unwrap()
         .content;
     let point = Point::new(book_content, args.point);
+    to_image(&point);
 
     println!("{}. {}", point.number, point.subject);
     for paragraph in point.paragraphs {
